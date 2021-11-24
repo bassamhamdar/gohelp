@@ -19,7 +19,7 @@ class OrgController extends Controller
      */
     public function index()
     {
-        $org = Organization::where('status', 1)->with('activity','orgProfile','address')->paginate(5);
+        $org = Organization::where('status', 1)->with('activity','orgProfile','address','request',)->paginate(5);
         return response()->json([
             "status"=>200,
             "success"=> true,
@@ -73,7 +73,7 @@ class OrgController extends Controller
      */
     public function show($id)
     {
-        $org = Organization::with('activity','OrgProfile','Address')->find($id);
+        $org = Organization::with('activity','OrgProfile','Address','Request')->find($id);
         if($org){
             if($org->status == 0){
                 return response()->json([

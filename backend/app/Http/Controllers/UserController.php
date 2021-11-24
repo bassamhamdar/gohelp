@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::with('Request')->find($id);
         if($user->status == 0){
             return response()->json([
                 "status"=>200,

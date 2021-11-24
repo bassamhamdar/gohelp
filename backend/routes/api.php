@@ -6,6 +6,8 @@ use App\Http\Controllers\OrgController;
 use App\Http\Controllers\OrgProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,3 +28,7 @@ Route::resource('/org', OrgController::class);
 Route::resource('/user', UserController::class);
 Route::resource('/orgProfile', OrgProfileController::class);
 Route::resource('/address', AddressController::class);
+Route::resource('/Request', RequestController::class);
+
+Route::post('/admin/blockuser/{id}',[AdminController::class, 'blockUser']);
+Route::post('/admin/organization/{id}',[AdminController::class, 'organization']);

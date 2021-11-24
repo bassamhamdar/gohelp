@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Organization;
-class AdminController extends Controller
+use App\Http\Requests\StoreRequestRequest;
+use App\Models\UserRequest;
+
+class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -33,9 +34,18 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequestRequest $request)
     {
-        
+        $inputs = $request->validated();
+        $req = new UserRequest();
+        $req->fill($inputs);
+        $req->save();
+        return response()->json([
+            'status'=>200,
+            'success'=>true,
+            'message'=>'Request had been sent successfully',
+        ]);
+
     }
 
     /**
@@ -81,37 +91,5 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function blockUser($id)
-    {
-        $user = User::find($id);
-        $user->status = 0;
-        $user->save();
-        return response()->json([
-            'status'=>200,
-            'success'=>true,
-            'message'=>'user is now blocked',
-        ]);
-    }
-
-    public function organization($id){
-        $org = Organization::find($id);
-        if($org->status == 0){
-            $org->status = 1;
-            $org->save();
-            return response()->json([
-                'status'=>200,
-                'succuss'=>true,
-                'message'=>'Organization is now activated'
-            ]);
-        }
-        $org->status = 0;
-        $org->save();
-        return response()->json([
-            'status'=>200,
-            'succuss'=>true,
-            'message'=>'Organization  deactivated'
-        ]);
-
     }
 }
