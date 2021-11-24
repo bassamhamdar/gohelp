@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rule;
 
-class UpdateOrgRequest extends FormRequest
+class StoreAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +23,14 @@ class UpdateOrgRequest extends FormRequest
      *
      * @return array
      */
-
-
     public function rules()
     {
-            $email = $this->request->get("email");
             return [
-
-                'name'=>['max:255'],
-                'email'=>[Rule::unique('organizations')->ignore($email,'email')],
-                'password'=>['min:6', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],                
-                'phone'=>[''],
-                'regNo'=>[''],
-                'activity_id'=>[''],
+                'org_id'=>['required'],
+                'city'=>['required'],
+                'region'=>['required'],
+                'street'=>['required'],
+                'country'=>['required'],
 
             ];
 
@@ -48,20 +42,19 @@ class UpdateOrgRequest extends FormRequest
         return [
             'required'=> ':attribute must be provided',
             'name.min'=> 'Name must be more than 6',
-            'password.regex'=>'Password should contain upper & lower case, numeric & character',
+            'password.regex'=>'Password should contain at least one Uppercase, one Lowercase, one Numeric and one special character',
             'unique'=>':attribute already exists'
+            
         ];
     }
     public function attributes()
     { 
         return [
-            'name' => 'Name',
-            'username' => 'Username',
-            'password' => 'Password',
-            'phone' => 'Phone number',
-            'activity_id'=>'activity',
-            'regNo'=>'Registration number',
-
+            'org_id'=>'Organization',
+            'city'=>'City field',
+            'region' => 'Region field',
+            'streey' => 'Street field',
+            'country' => 'Country field',
         ];
     }
     /**

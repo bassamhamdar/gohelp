@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Organization;
-use App\Models\OrgProfile;
-use App\Models\activity;
-use App\Http\Requests\StoreOrgRequest;
-use App\Http\Requests\UpdateOrgRequest;
-use App\Models\Address;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 
-class OrgController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,13 +16,11 @@ class OrgController extends Controller
      */
     public function index()
     {
-        $org = Organization::where('status', 1)->with('activity','orgProfile','address')->paginate(5);
+        $users = user::all();
         return response()->json([
-            "status"=>200,
-            "success"=> true,
-            "message" => "Organizations has been retreived succesfully",
-            "data"=> $org,
-            
+            'success'=>true,
+            'message'=>'users retrieved successfully',
+            'data'=>$users
         ]);
     }
 
@@ -36,7 +31,7 @@ class OrgController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -45,19 +40,12 @@ class OrgController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOrgRequest $request)
-    {   
-
+    public function store(StoreUserRequest $request)
+    {
         $inputs = $request->validated();
-        $org = new Organization();
+        $org = new User();
         $org->fill($inputs);
         $org->save();
-        $profile = new OrgProfile();
-        $profile->fill($inputs);
-        $address = new Address();
-        $address->fill($inputs);
-        $org->Orgprofile()->save($profile);
-        $org->Address()->save($address);
         return response()->json([
             "status"=>200,
             "success"=> true,
@@ -73,29 +61,20 @@ class OrgController extends Controller
      */
     public function show($id)
     {
-        $org = Organization::with('activity','OrgProfile','Address')->find($id);
-        if($org){
-            if($org->status == 0){
-                return response()->json([
-                    "status"=>200,
-                    "success"=> false,
-                    "message" => "Your profile is being reviewed",
-                    
-                ]);
-            }
+        $user = User::find($id);
+        if($user->status == 0){
             return response()->json([
                 "status"=>200,
-                "success"=> true,
-                "message" => "organization retreived successfully",
-                "data"=> $org
+                "success"=> false,
+                "message" => "Sorry ! Your profile is being reviewed",
             ]);
         }
         return response()->json([
             "status"=>200,
-            "success"=> false,
-            "message" => "Not found",
+            "success"=> true,
+            "message" => "Your profile retrieved successfully",
+            "data"=>$user,
         ]);
-
     }
 
     /**
@@ -106,7 +85,7 @@ class OrgController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -116,12 +95,13 @@ class OrgController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOrgRequest $StoreRequest, $id)
-    {   
-        $inputs = $StoreRequest->validated();
-        $org = Organization::find($id);
-        if($org){
-            $org->update($inputs);
+    public function update(UpdateUserRequest $request, $id)
+    {
+        $inputs = $request->validated();
+        $user = User::find($id);
+        if($user){
+            $user->fill($inputs);
+            $user->save();
             return response()->json([
                 "status"=>200,
                 "success"=> true,
@@ -135,7 +115,6 @@ class OrgController extends Controller
             "message" => "Not found",
             
         ]);
-
     }
 
     /**
@@ -146,25 +125,6 @@ class OrgController extends Controller
      */
     public function destroy($id)
     {
-        $org = Organization::find($id);
-        if($org){
-            $org->OrgProfile()->delete();
-            $org->Address()->delete();
-            $org->delete();
-            return response()->json([
-                'status' => 200,
-                'success'=> true,
-                'message' => 'deleted succesfully',
-            ]);
-        }
-        return response()->json([
-            'status' => 200,
-            'success'=> false,
-            'message' => 'failed to delete',
-        ]);
-
-
+        //
     }
-
-
 }

@@ -33,6 +33,13 @@ class StoreOrgRequest extends FormRequest
                 'phone'=>['required'],
                 'regNo'=>['required'],
                 'activity_id'=>['required'],
+                'about'=>['required'],
+                'info'=>['required'],
+                'image'=>['required'],
+                'city'=>['required'],
+                'region'=>['required'],
+                'street'=>['required'],
+                'country'=>['required'],
 
             ];
 
@@ -46,17 +53,24 @@ class StoreOrgRequest extends FormRequest
             'name.min'=> 'Name must be more than 6',
             'password.regex'=>'Password should contain at least one Uppercase, one Lowercase, one Numeric and one special character',
             'unique'=>':attribute already exists'
+            
         ];
     }
     public function attributes()
     { 
         return [
             'name' => 'Name',
-            'username' => 'Username',
             'password' => 'Password',
             'phone' => 'Phone number',
-            'activity_id'=>'activity',
+            'activity_id'=>'Activity',
             'regNo'=>'Registration number',
+            'about'=>'About section',
+            'image'=>'Image section',
+            'info'=>'Information section',
+            'city'=>'City field',
+            'region' => 'Region field',
+            'streey' => 'Street field',
+            'country' => 'Country field',
         ];
     }
     /**

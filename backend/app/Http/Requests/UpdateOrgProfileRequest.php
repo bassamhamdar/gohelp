@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
-class UpdateOrgRequest extends FormRequest
+class UpdateOrgProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,15 +28,12 @@ class UpdateOrgRequest extends FormRequest
 
     public function rules()
     {
-            $email = $this->request->get("email");
             return [
 
-                'name'=>['max:255'],
-                'email'=>[Rule::unique('organizations')->ignore($email,'email')],
-                'password'=>['min:6', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],                
-                'phone'=>[''],
-                'regNo'=>[''],
-                'activity_id'=>[''],
+                'about'=>[''],
+                'info'=>[''],
+                'image'=>[''],
+
 
             ];
 
@@ -55,14 +52,12 @@ class UpdateOrgRequest extends FormRequest
     public function attributes()
     { 
         return [
-            'name' => 'Name',
-            'username' => 'Username',
-            'password' => 'Password',
-            'phone' => 'Phone number',
-            'activity_id'=>'activity',
-            'regNo'=>'Registration number',
+            'about'=>'about section',
+            'image'=>'image section',
+            'info'=>'information section',
 
         ];
+     
     }
     /**
      * Handle a failed validation attempt.

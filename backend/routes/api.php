@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrgController;
+use App\Http\Controllers\OrgProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AddressController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('/org', OrgController::class);
+Route::resource('/user', UserController::class);
+Route::resource('/orgProfile', OrgProfileController::class);
+Route::resource('/address', AddressController::class);
