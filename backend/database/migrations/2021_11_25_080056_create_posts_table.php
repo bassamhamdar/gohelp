@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrgProfilesTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateOrgProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('org_profiles', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->integer('org_id')->unsigned();
-            $table->text('about');
-            $table->text('info');
-            $table->string('image');
-            $table->string('fb')->nullable();
-            $table->string('ig')->nullable();
-            $table->string('tw')->nullable();
+            $table->string('title');
+            $table->text('description');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateOrgProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('org_profiles');
+        Schema::dropIfExists('posts');
     }
 }

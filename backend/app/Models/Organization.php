@@ -9,6 +9,7 @@ use App\Models\OrgProfile;
 use App\Models\Address;
 use App\Models\User;
 use App\Models\UserRequest;
+use App\Models\Post;
 class Organization extends Model
 {
     use HasFactory;
@@ -22,6 +23,7 @@ class Organization extends Model
         'regNo',
         'activity_id',
         'status',
+        
     ];
     protected $hidden = [
         'password'
@@ -47,6 +49,10 @@ class Organization extends Model
     public function Request(){
         return $this->hasMany(UserRequest::class, 'org_id');
     }
+    public function Post(){
+        return $this->hasMany(Post::class,'org_id');
+    }
+
     public function setPasswordAttribute($password){
         $this->attributes['password'] = bcrypt($password);
     }
