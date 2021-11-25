@@ -9,6 +9,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\DonationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,7 +32,7 @@ Route::resource('/orgProfile', OrgProfileController::class);
 Route::resource('/address', AddressController::class);
 Route::resource('/Request', RequestController::class);
 Route::resource('/post', PostController::class);
-
+Route::resource('/donation', DonationController::class);
 
 Route::post('/admin/blockuser/{id}',[AdminController::class, 'blockUser']);
 Route::post('/admin/organization/{id}',[AdminController::class, 'organization']);

@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRequest;
 use App\Models\Organization;
+use App\Models\Donation;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -53,6 +54,9 @@ class User extends Authenticatable
     
     public function Request(){
       return $this->hasMany(UserRequest::class,'user_id');
+    }
+    public function Donation(){
+        return $this->hasMany(Donation::class);
     }
 
     public function setPasswordAttribute($password){
