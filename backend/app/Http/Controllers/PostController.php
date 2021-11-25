@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -77,9 +78,24 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        //
+        $inputs = $request->validated();
+        $post = Post::find($id);
+        if($post){
+            $post->update($inputs);
+            return response()->json([
+                'status'=>200,
+                'success'=>true,
+                'message'=>'Post updated successfully',
+                'data'=>$post
+            ]);
+        }
+        return response()->json([
+            'status'=>200,
+            'success'=>false,
+            'message'=>'Post not found',
+        ]);
     }
 
     /**
