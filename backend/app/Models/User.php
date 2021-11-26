@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,7 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserRequest;
 use App\Models\Organization;
 use App\Models\Donation;
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
+
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -36,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password'
     ];
 
     /**
@@ -59,6 +61,15 @@ class User extends Authenticatable
         return $this->hasMany(Donation::class);
     }
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     public function setPasswordAttribute($password){
         $this->attributes['password'] = bcrypt($password);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 
 class UserController extends Controller
@@ -40,7 +41,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUserRequest $request)
+    public function register(StoreUserRequest $request)
     {
         $inputs = $request->validated();
         $org = new User();
@@ -127,4 +128,36 @@ class UserController extends Controller
     {
         //
     }
+ 
+
+    public function login(LoginRequest $request)
+    { 
+        $credentials = $request->validated();
+        $credentials = request(['email', 'password']);
+
+        if (! $token = auth('user')->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+    public function logout()
+    {
+        auth('user')->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'success'=>true,
+            'message'=>'Logged in successfully',
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => auth('user')->factory()->getTTL() * 60
+        ],200);
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Organization;
+use App\Models\Admin;
 class AdminController extends Controller
 {
     /**
@@ -84,6 +85,7 @@ class AdminController extends Controller
     }
     public function blockUser($id)
     {
+        dd($id);
         $user = User::find($id);
         $user->status = 0;
         $user->save();
@@ -113,5 +115,43 @@ class AdminController extends Controller
             'message'=>'Organization  deactivated'
         ]);
 
+    }
+
+    public function login()
+    {
+        $credentials = request(['email', 'password']);
+        if (! $token = auth('admin')->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        return $this->respondWithToken($token);
+    }
+
+    public function register(Request $request){
+        $user = Admin::create([
+            'name' => $request->name,
+            'email'    => $request->email,
+            'password' => $request->password,
+        ]);
+        $user->save();
+        return response()->json([
+            'message'=>'admin registered'
+        ]);
+
+    }
+
+    public function logout()
+    {
+        auth('admin')->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => auth('admin')->factory()->getTTL() * 60
+        ]);
     }
 }

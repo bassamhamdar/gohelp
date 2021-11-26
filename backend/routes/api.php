@@ -21,18 +21,53 @@ use App\Http\Controllers\DonationController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::group(['prefix' => 'org'], function() {
+        Route::post('/login', [OrgController::class, 'login']);
+        Route::post('/register', [OrgController::class, 'register']);
+        Route::group(['middleware' => ['jwt.organization']], function() {
+            Route::post('/logout', [OrgController::class, 'logout']);
+            Route::resource('/org', OrgController::class);
+            Route::resource('/orgProfile', OrgProfileController::class);
+            Route::resource('/address', AddressController::class);
+            Route::resource('/donation', DonationController::class);
+            Route::resource('/post', PostController::class);
+            Route::resource('/Request', RequestController::class);
+
+
+
+    });
+
 });
 
 
-Route::resource('/org', OrgController::class);
-Route::resource('/user', UserController::class);
-Route::resource('/orgProfile', OrgProfileController::class);
-Route::resource('/address', AddressController::class);
-Route::resource('/Request', RequestController::class);
-Route::resource('/post', PostController::class);
-Route::resource('/donation', DonationController::class);
+    Route::group(['prefix' => 'user'], function() {
+        Route::post('/login', [UserController::class, 'login']);
+        Route::post('/register', [UserController::class, 'register']);
+        Route::group(['middleware' => ['jwt.user']], function() {
+            Route::post('/logout', [UserController::class, 'logout']);
+            Route::resource('/org', OrgController::class);
+            Route::resource('/user', UserController::class);
+            Route::resource('/Request', RequestController::class);
+            Route::resource('/post', PostController::class);
+            Route::resource('/donation', DonationController::class);
+        
+        });
+    });
 
-Route::post('/admin/blockuser/{id}',[AdminController::class, 'blockUser']);
-Route::post('/admin/organization/{id}',[AdminController::class, 'organization']);
+    Route::group(['prefix' => 'admin'], function() {
+        Route::post('/login', [AdminController::class, 'login']);
+        Route::post('/register', [AdminController::class, 'register']);
+
+        Route::group(['middleware' => ['jwt.admin']], function() {
+            Route::post('/logout',[AdminController::class, 'logout']);
+            Route::post('/blockuser/{id}',[AdminController::class, 'blockUser']);
+            Route::post('/organization/{id}',[AdminController::class, 'organization']);
+            Route::resource('/donation', DonationController::class);
+            Route::resource('/user', UserController::class);
+            Route::resource('/org', OrgController::class);
+
+
+        });
+        
+    });
+

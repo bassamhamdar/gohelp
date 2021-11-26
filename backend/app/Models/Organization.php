@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\activity;
@@ -10,7 +13,8 @@ use App\Models\Address;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\Post;
-class Organization extends Model
+
+class Organization extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
@@ -26,7 +30,7 @@ class Organization extends Model
         
     ];
     protected $hidden = [
-        'password'
+        'password','remember_token'
     ];
 
 
@@ -51,6 +55,15 @@ class Organization extends Model
     }
     public function Post(){
         return $this->hasMany(Post::class,'org_id');
+    }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
     public function setPasswordAttribute($password){
