@@ -47,8 +47,14 @@ class OrgProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $profile = OrgProfile::with('organization')->find($id);
+        return response()->json([
+            'success'=>true,
+            'message'=>'profile retreived successfully',
+            'data'=> $profile,
+        ],200);
+
     }
 
     /**

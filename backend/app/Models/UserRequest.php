@@ -24,6 +24,6 @@ class UserRequest extends Model
     }
     
     public function Organization(){
-        return $this->belongsTo(Organization::class, 'user_id');
+        return $this->belongsTo(Organization::class, 'org_id');
     }
 }

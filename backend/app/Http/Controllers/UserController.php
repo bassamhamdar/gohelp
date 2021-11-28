@@ -63,6 +63,12 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('Request','Donation')->find($id);
+        if(!$user){
+            return response()->json([
+                'success'=> false,
+                'message'=> 'user not found'
+            ], 200);
+        }
         if($user->status == 0){
             return response()->json([
                 "status"=>200,

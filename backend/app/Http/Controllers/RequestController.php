@@ -92,4 +92,52 @@ class RequestController extends Controller
     {
         //
     }
+
+    public function helpRequests($org_id){
+     
+        $helpReq = UserRequest::where('org_id', $org_id)->where('isDonation', 0)->with('User')->get();
+
+        if($helpReq){
+            return response()->json([
+                'success'=>true,
+                'message'=> 'help requests retreived successfully',
+                'data'=> $helpReq,
+            ],200);
+
+        }
+        return response()->json([
+            'success'=>false,
+            'message'=> 'No help requests at the moment',
+        ],200);
+    }
+
+
+    public function donationRequests($org_id){
+     
+        $donationReq = UserRequest::where('org_id', $org_id)->where('isDonation', 1)->with('User')->get();
+      
+
+        if(!$donationReq){
+            return response()->json([
+                'success'=>false,
+                'message'=> 'No donation requests at the moment',
+            ],200);
+        }
+        return response()->json([
+            'success'=>true,
+            'message'=> 'donation requests retreived successfully',
+            'data'=> $donationReq,
+        ],200);
+    }
+
+    public function acceptRequests($id){
+        $req = UserRequest::find($id);
+        $req->accepted = 1 ;
+        $req->save();
+        return response()->json([
+            'success'=>true,
+            'message'=>'request accepted'
+        ]);
+    }
+    
 }

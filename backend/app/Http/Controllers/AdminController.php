@@ -85,7 +85,7 @@ class AdminController extends Controller
     }
     public function blockUser($id)
     {
-        dd($id);
+        
         $user = User::find($id);
         $user->status = 0;
         $user->save();

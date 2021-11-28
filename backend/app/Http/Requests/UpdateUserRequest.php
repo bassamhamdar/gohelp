@@ -29,6 +29,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
             $email = $this->request->get("email");
+            $idCard = $this->request->get("idCard");
             return [
 
                 'firstname'=>['max:255'],
@@ -37,7 +38,7 @@ class UpdateUserRequest extends FormRequest
                 'password'=>['min:6', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],                
                 'phone'=>[''],
                 'address'=>[''],
-                'idCard'=>[''],
+                'idCard'=>[Rule::unique('users')->ignore($idCard,'idCard')],
 
             ];
 

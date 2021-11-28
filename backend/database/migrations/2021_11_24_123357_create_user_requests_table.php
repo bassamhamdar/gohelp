@@ -21,6 +21,7 @@ class CreateUserRequestsTable extends Migration
             $table->text('description');
             $table->string('image')->nullable();
             $table->boolean('isDonation')->default(0);
+            $table->boolean('accepted')->default(0);
             $table->timestamps();
         });
     }

@@ -25,13 +25,14 @@ use App\Http\Controllers\DonationController;
         Route::post('/login', [OrgController::class, 'login']);
         Route::post('/register', [OrgController::class, 'register']);
         Route::group(['middleware' => ['jwt.organization']], function() {
-            Route::post('/logout', [OrgController::class, 'logout']);
+            Route::get('/profile/{id}', [OrgController::class, 'show']);
+            Route::get('/donations/{id}', [PostController::class, 'DonationsOnPosts']);
+            Route::get('/helpRequests/{id}',  [RequestController::class, 'helpRequests']);
+            Route::get('/donationRequests/{id}',  [RequestController::class, 'donationRequests']);
             Route::resource('/org', OrgController::class);
-            Route::resource('/orgProfile', OrgProfileController::class);
-            Route::resource('/address', AddressController::class);
-            Route::resource('/donation', DonationController::class);
+            Route::post('/accept/request/{id}', [RequestController::class, 'acceptRequests']);
+            Route::post('/logout', [OrgController::class, 'logout']);
             Route::resource('/post', PostController::class);
-            Route::resource('/Request', RequestController::class);
 
 
 
@@ -40,16 +41,18 @@ use App\Http\Controllers\DonationController;
 });
 
 
+
     Route::group(['prefix' => 'user'], function() {
         Route::post('/login', [UserController::class, 'login']);
         Route::post('/register', [UserController::class, 'register']);
         Route::group(['middleware' => ['jwt.user']], function() {
             Route::post('/logout', [UserController::class, 'logout']);
-            Route::resource('/org', OrgController::class);
-            Route::resource('/user', UserController::class);
-            Route::resource('/Request', RequestController::class);
-            Route::resource('/post', PostController::class);
-            Route::resource('/donation', DonationController::class);
+            Route::get('/org', [OrgController::class, 'index']);
+            Route::get('/org/profile/{id}', [OrgProfileController::class, 'show']);
+            Route::get('/posts', [PostController::class, 'index']);
+            Route::post('/donate', [DonationController::class, 'store']);
+            Route::post('/request',[RequestController::class, 'store']);
+            Route::resource('/profile', UserController::class);
         
         });
     });

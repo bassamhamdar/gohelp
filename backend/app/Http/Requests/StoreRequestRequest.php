@@ -30,6 +30,7 @@ class StoreRequestRequest extends FormRequest
                 'org_id'=>['required'],
                 'title'=>['required'],
                 'description'=>['required'],
+                'isDonation'=>[''],
                 'image'=>[''],
 
             ];
@@ -41,9 +42,6 @@ class StoreRequestRequest extends FormRequest
 
         return [
             'required'=> ':attribute must be provided',
-            'name.min'=> 'Name must be more than 6',
-            'password.regex'=>'Password should contain at least one Uppercase, one Lowercase, one Numeric and one special character',
-            'unique'=>':attribute already exists'
             
         ];
     }
@@ -54,7 +52,6 @@ class StoreRequestRequest extends FormRequest
             'user_id'=>'User',
             'title' => 'Title field',
             'description' => 'description field',
-            'country' => 'Country field',
         ];
     }
     /**

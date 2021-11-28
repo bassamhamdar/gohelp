@@ -16,7 +16,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with('organization')->get();
+        return response()->json([
+            'success'=>true,
+            'message'=> 'post retreived successfully',
+            'data'=> $posts,
+        ], 200);
     }
 
     /**
@@ -107,5 +112,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function DonationsOnPosts($org_id){
+        $posts = Post::where('org_id', $org_id)->with('donation')->get();
+        return $posts;
     }
 }
