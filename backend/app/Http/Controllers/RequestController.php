@@ -132,12 +132,15 @@ class RequestController extends Controller
 
     public function acceptRequests($id){
         $req = UserRequest::find($id);
-        $req->accepted = 1 ;
-        $req->save();
-        return response()->json([
-            'success'=>true,
-            'message'=>'request accepted'
-        ]);
+        if($req){
+            $req->accepted = 1 ;
+            $req->save();
+            return response()->json([
+                'success'=>true,
+                'message'=>'request accepted'
+            ]);
+        }
+  
     }
     
 }

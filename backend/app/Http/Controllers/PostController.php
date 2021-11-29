@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Models\Donation;
 
 class PostController extends Controller
 {
@@ -116,6 +117,30 @@ class PostController extends Controller
     
     public function DonationsOnPosts($org_id){
         $posts = Post::where('org_id', $org_id)->with('donation')->get();
-        return $posts;
+        return response()->json([
+            'success'=>true,
+            'message'=>'donations on posts for your organization retreived successfully',
+            'data'=> $posts,
+        ]);
+        
+    }
+
+    public function donationOnSpecificPost($post_id){
+        $donation = Donation::where('post_id', $post_id)->get();
+        return response()->json([
+            'success'=>true,
+            'message'=>'donations on this post retreived successfully',
+            'data'=> $donation,
+        ]);
+    }
+
+    public function acceptDonation($id){
+        $donation = Donation::find($id);
+        $donation->status = 1;
+        $donation->save();
+        return response()->json([
+            'success'=> true,
+            'message'=> 'donation accepted'
+        ]);
     }
 }

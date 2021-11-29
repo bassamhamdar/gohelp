@@ -26,13 +26,18 @@ use App\Http\Controllers\DonationController;
         Route::post('/register', [OrgController::class, 'register']);
         Route::group(['middleware' => ['jwt.organization']], function() {
             Route::get('/profile/{id}', [OrgController::class, 'show']);
-            Route::get('/donations/{id}', [PostController::class, 'DonationsOnPosts']);
+            Route::get('/all/donations/{id}', [PostController::class, 'DonationsOnPosts']);
             Route::get('/helpRequests/{id}',  [RequestController::class, 'helpRequests']);
             Route::get('/donationRequests/{id}',  [RequestController::class, 'donationRequests']);
+            Route::post('/donation/accept/{id}', [PostController::class,'acceptDonation']);
+            Route::get('/donation/{id}', [PostController::class,'donationOnSpecificPost']);
             Route::resource('/org', OrgController::class);
             Route::post('/accept/request/{id}', [RequestController::class, 'acceptRequests']);
             Route::post('/logout', [OrgController::class, 'logout']);
-            Route::resource('/post', PostController::class);
+            Route::post('/post', [PostController::class, 'store']);
+            Route::put('/post/{id}', [PostController::class, 'update']);
+            Route::get('/post', [PostController::class, 'index']);
+            
 
 
 
@@ -52,7 +57,7 @@ use App\Http\Controllers\DonationController;
             Route::get('/posts', [PostController::class, 'index']);
             Route::post('/donate', [DonationController::class, 'store']);
             Route::post('/request',[RequestController::class, 'store']);
-            Route::resource('/profile', UserController::class);
+            Route::put('/profile/{id}', [UserController::class,'update']);
         
         });
     });
