@@ -20,6 +20,7 @@ use App\Http\Controllers\DonationController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+    Route::get('/user/all', [UserController::class,'index']);
 
     Route::group(['prefix' => 'org'], function() {
         Route::post('/login', [OrgController::class, 'login']);
@@ -71,11 +72,11 @@ use App\Http\Controllers\DonationController;
             Route::post('/blockuser/{id}',[AdminController::class, 'blockUser']);
             Route::post('/organization/{id}',[AdminController::class, 'organization']);
             Route::resource('/donation', DonationController::class);
-            Route::resource('/user', UserController::class);
+            Route::get('/user', [UserController::class,'index']);
             Route::resource('/org', OrgController::class);
 
 
-        });
+        }); 
         
     });
 
