@@ -21,6 +21,7 @@ use App\Http\Controllers\DonationController;
 |
 */
     Route::get('/user/all', [UserController::class,'index']);
+    Route::get('admin/org', [OrgController::class, 'index']);
 
     Route::group(['prefix' => 'org'], function() {
         Route::post('/login', [OrgController::class, 'login']);
@@ -63,20 +64,20 @@ use App\Http\Controllers\DonationController;
         });
     });
 
-    Route::group(['prefix' => 'admin'], function() {
-        Route::post('/login', [AdminController::class, 'login']);
-        Route::post('/register', [AdminController::class, 'register']);
+    // Route::group(['prefix' => 'admin'], function() {
+    //     Route::post('/login', [AdminController::class, 'login']);
+    //     Route::post('/register', [AdminController::class, 'register']);
 
-        Route::group(['middleware' => ['jwt.admin']], function() {
-            Route::post('/logout',[AdminController::class, 'logout']);
-            Route::post('/blockuser/{id}',[AdminController::class, 'blockUser']);
-            Route::post('/organization/{id}',[AdminController::class, 'organization']);
-            Route::resource('/donation', DonationController::class);
-            Route::get('/user', [UserController::class,'index']);
-            Route::resource('/org', OrgController::class);
+    //     Route::group(['middleware' => ['jwt.admin']], function() {
+    //         Route::post('/logout',[AdminController::class, 'logout']);
+    //         Route::post('/blockuser/{id}',[AdminController::class, 'blockUser']);
+    //         Route::post('/organization/{id}',[AdminController::class, 'organization']);
+    //         Route::resource('/donation', DonationController::class);
+    //         Route::get('/user', [UserController::class,'index']);
+    //         Route::resource('/org', OrgController::class);
 
 
-        }); 
+    //     }); 
         
-    });
+    // });
 

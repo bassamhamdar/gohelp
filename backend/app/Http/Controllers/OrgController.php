@@ -19,7 +19,7 @@ class OrgController extends Controller
      */
     public function index()
     {
-        $org = Organization::where('status', 1)->with('activity','address')->paginate(5);
+        $org = Organization::where('status', 1)->with('activity','address')->get();
         return response()->json([
             "status"=>200,
             "success"=> true,
