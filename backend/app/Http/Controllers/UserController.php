@@ -142,10 +142,10 @@ class UserController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth('user')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 200);
         }
-
-        return $this->respondWithToken($token);
+        $user = User::where('email', request('email'))->get();
+        return $this->respondWithToken($token, $user);
     }
 
     public function logout()
@@ -155,11 +155,12 @@ class UserController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         return response()->json([
             'success'=>true,
             'message'=>'Logged in successfully',
+            'data'=>$user,
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth('user')->factory()->getTTL() * 60
